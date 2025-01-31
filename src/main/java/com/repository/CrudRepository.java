@@ -1,4 +1,4 @@
-package repository;
+package com.repository;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -1,15 +1,18 @@
-package repository;
+package com.repository;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
-
+@Repository
 public class SessionRepository extends CrudRepository<Session, UUID> {
     private final SessionFactory sessionFactory;
+    @Autowired
     public SessionRepository(SessionFactory sessionFactory) {
         super(sessionFactory, Session.class);
         this.sessionFactory = sessionFactory;

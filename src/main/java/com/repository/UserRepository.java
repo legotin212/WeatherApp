@@ -1,12 +1,15 @@
-package repository;
+package com.repository;
 
-import entity.User;
+import com.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class UserRepository extends CrudRepository<User, Integer> {
     private final SessionFactory sessionFactory;
-
+    @Autowired
     public UserRepository(SessionFactory sessionFactory) {
         super(sessionFactory, User.class);
         this.sessionFactory = sessionFactory;

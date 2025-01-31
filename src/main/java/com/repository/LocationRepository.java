@@ -1,14 +1,18 @@
-package repository;
+package com.repository;
 
-import entity.Location;
+import com.entity.Location;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class LocationRepository extends CrudRepository<Location, Integer> {
-    private final SessionFactory sessionFactory;
 
+    private final SessionFactory sessionFactory;
+    @Autowired
     public LocationRepository(SessionFactory sessionFactory) {
         super(sessionFactory, Location.class);
         this.sessionFactory = sessionFactory;

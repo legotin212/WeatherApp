@@ -1,4 +1,4 @@
-package util.passwordutil;
+package com.util.passwordutil;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
