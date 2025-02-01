@@ -1,5 +1,6 @@
 package com.repository;
 
+import com.entity.UserSession;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -7,20 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 @Repository
-public class SessionRepository extends CrudRepository<Session, UUID> {
+public class SessionRepository extends CrudRepository<UserSession, UUID> {
     private final SessionFactory sessionFactory;
+
     @Autowired
     public SessionRepository(SessionFactory sessionFactory) {
-        super(sessionFactory, Session.class);
+        super(sessionFactory, UserSession.class);
         this.sessionFactory = sessionFactory;
     }
 
     public List<Session> findByUserId(int userId) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Session WHERE user.id = :userId", Session.class)
+            return session.createQuery("FROM UserSession WHERE user.id = :userId", Session.class)
                     .setParameter("userId", userId)
                     .list();
         }
@@ -29,7 +32,7 @@ public class SessionRepository extends CrudRepository<Session, UUID> {
     public List<Session> findActiveSessionsByUserId(int userId) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery(
-                            "FROM Session WHERE user.id = :userId AND ExpiresAt > :currentTime",
+                            "FROM UserSession WHERE user.id = :userId AND ExpiresAt > :currentTime",
                             Session.class
                     )
                     .setParameter("userId", userId)
@@ -42,7 +45,7 @@ public class SessionRepository extends CrudRepository<Session, UUID> {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.createQuery("DELETE FROM Session WHERE user.id = :userId")
+            session.createQuery("DELETE FROM UserSession WHERE user.id = :userId")
                     .setParameter("userId", userId)
                     .executeUpdate();
             transaction.commit();
@@ -56,8 +59,8 @@ public class SessionRepository extends CrudRepository<Session, UUID> {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.createQuery("DELETE FROM Session WHERE ExpiresAt <= :currentTime")
-                    .setParameter("currentTime", new Timestamp(System.currentTimeMillis()))
+            session.createQuery("DELETE FROM UserSession WHERE ExpiresAt <= :currentTime")
+                    .setParameter("currentTime", LocalDateTime.now())
                     .executeUpdate();
             transaction.commit();
         } catch (Exception e) {

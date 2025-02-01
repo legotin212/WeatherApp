@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entity.Session;
+import com.entity.UserSession;
 import com.entity.User;
 import com.repository.SessionRepository;
 import com.repository.UserRepository;
@@ -29,7 +29,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     private void createSession(User user){
-        Session session = new Session();
+        UserSession session = new UserSession();
         session.setUser(user);
         LocalDateTime expires = LocalDateTime.now().plusMinutes(SESSION_LIFETIME_SECONDS);
         session.setExpiresAt(expires);
