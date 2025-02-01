@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.UUID;
 @Entity
 @Table(name = "Sessions")
@@ -20,9 +21,9 @@ public class Session {
     @JoinColumn(name = "id")
     private User user;
     @Column(name = "ExpiresAt")
-    private Timestamp ExpiresAt;
+    private LocalDateTime ExpiresAt;
 
-    public Session(User user, Timestamp expiresAt) {
+    public Session(User user, LocalDateTime expiresAt) {
         this.user = user;
         ExpiresAt = expiresAt;
     }
