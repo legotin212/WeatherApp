@@ -26,7 +26,6 @@ public class LocationRepository extends CrudRepository<Location, Integer> {
         }
     }
 
-
     public List<Location> findByUserId(int userId) {
         try (Session session  = sessionFactory.openSession()) {
             return session.createQuery("FROM Location WHERE user.id = :userId", Location.class)
