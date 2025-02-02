@@ -6,6 +6,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class UserRepository extends CrudRepository<User, Integer> {
     private final SessionFactory sessionFactory;
@@ -15,11 +17,11 @@ public class UserRepository extends CrudRepository<User, Integer> {
         this.sessionFactory = sessionFactory;
     }
 
-    public User findByLogin(String login) {
+    public Optional<User> findByLogin(String login) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM User WHERE login = :login", User.class)
+            return Optional.ofNullable(session.createQuery("FROM User WHERE login = :login", User.class)
                     .setParameter("login", login)
-                    .uniqueResult();
+                    .uniqueResult());
         }
     }
 
