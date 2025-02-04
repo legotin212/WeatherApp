@@ -1,4 +1,4 @@
-package com;
+package com.config;
 
 import com.entity.Location;
 import com.entity.User;
