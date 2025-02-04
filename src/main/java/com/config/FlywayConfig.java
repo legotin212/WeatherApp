@@ -1,4 +1,4 @@
-package com;
+package com.config;
 
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
