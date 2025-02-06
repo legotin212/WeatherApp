@@ -1,5 +1,11 @@
 package com.config;
 
+import com.entity.Location;
+import com.entity.User;
+import io.github.cdimascio.dotenv.Dotenv;
+import org.flywaydb.core.Flyway;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -8,15 +14,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring6.view.ThymeleafViewResolver;
+
 
 @Configuration
 @ComponentScan("com")
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
+    private final Dotenv dotenv = Dotenv.load();
+
+    private final String dbUser = dotenv.get("DB_USER");
+    private final String dbPassword = dotenv.get("DB_PASSWORD");
 
     @Autowired
     public SpringConfig(ApplicationContext applicationContext) {
@@ -45,5 +56,35 @@ public class SpringConfig implements WebMvcConfigurer {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
+    }
+
+    @Bean
+    public SessionFactory sessionFactory() {
+
+        org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
+        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        configuration.setProperty("hibernate.show_sql", "true");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "none");
+
+        configuration.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5432/mydatabase");
+        configuration.setProperty("hibernate.default_schema", "public");
+        configuration.setProperty("hibernate.connection.username", dbUser);
+        configuration.setProperty("hibernate.connection.password", dbPassword );
+
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Location.class);
+        configuration.addAnnotatedClass(Session.class);
+
+        return configuration.buildSessionFactory();
+    }
+
+    @Bean
+    public Flyway flyway() {
+        Flyway flyway = Flyway.configure()
+                .dataSource("jdbc:postgresql://localhost:5432/mydatabase", dbUser, dbPassword)
+                .load();
+
+        flyway.migrate(); // Запуск миграций при старте
+        return flyway;
     }
 }
