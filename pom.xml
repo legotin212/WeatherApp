@@ -20,6 +20,11 @@
       <version>2.0.16</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>2.23.1</version>
+    </dependency>
+    <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
       <version>6.1.0</version>
@@ -108,6 +113,17 @@
   <build>
 
     <finalName>WeatherApp</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <path>/</path> <!-- Контекстный путь вашего приложения -->
+          <update>true</update> <!-- Автоматически обновлять приложение -->
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
 </project>
