@@ -2,6 +2,7 @@ package com.repository;
 
 import com.entity.User;
 import com.entity.UserSession;
+import jakarta.transaction.Transactional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -31,5 +32,13 @@ public class SessionRepository extends CrudRepository<UserSession, UUID> {
             return Optional.ofNullable(query.uniqueResult());
         }
     }
-
+    @Transactional
+    public void deleteExpiredSessions() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "DELETE FROM UserSession us WHERE us.ExpiresAt <= :currentTime";
+            Query query = session.createQuery(hql);
+            query.setParameter("currentTime", currentTime);
+        }
+    }
 }
