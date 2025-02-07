@@ -1,18 +1,35 @@
 package com.controller;
 
-import lombok.extern.slf4j.Slf4j;
+import com.dto.UserCredentialsDto;
+import com.service.UserAuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/signUp")
-@Slf4j
 public class SignUpController {
-    @GetMapping
+    private final UserAuthService userAuthService;
+    @Autowired
+    public SignUpController(UserAuthService userAuthService) {
+        this.userAuthService = userAuthService;
+    }
+
+    @GetMapping("/signUp")
     public String getSignUpPage() {
-        log.info("SignUp");
-        //если еще нет сессии
         return "sign-up";
+    }
+
+    @PostMapping("/signUp")
+    public String singUp(@RequestBody UserCredentialsDto credentials) {
+        //валидация имени
+
+        //валидация паролей
+
+        userAuthService.createUser(credentials);
+
+        return "sign-in";
     }
 }

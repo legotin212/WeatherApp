@@ -2,6 +2,7 @@ package com.config;
 
 import com.entity.Location;
 import com.entity.User;
+import com.interceptor.AuthInterceptor;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.flywaydb.core.Flyway;
 import org.hibernate.Session;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -24,15 +26,18 @@ import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
+    @Autowired
+    private AuthInterceptor authInterceptor;
     private final Dotenv dotenv = Dotenv.load();
 
     private final String dbUser = dotenv.get("DB_USER");
     private final String dbPassword = dotenv.get("DB_PASSWORD");
 
-    @Autowired
     public SpringConfig(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
+
+
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
@@ -86,5 +91,13 @@ public class SpringConfig implements WebMvcConfigurer {
 
         flyway.migrate(); // Запуск миграций при старте
         return flyway;
+    }
+
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/signUp", "/signIn", "/logout", "/css/**", "/js/**", "/images/**");
     }
 }
