@@ -1,5 +1,6 @@
 package com.service;
 
+import com.dto.UserCredentialsDto;
 import com.entity.User;
 import com.entity.UserSession;
 import com.repository.SessionRepository;
@@ -23,22 +24,21 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
-    public void createUser(User user) {
-      String hashPassword = PasswordUtil.hashPassword(user.getPassword());
-      user.setPassword(hashPassword);
-      userRepository.save(user);
+    public void createUser(UserCredentialsDto credentials) {
+      String hashPassword = PasswordUtil.hashPassword(credentials.password());
+      userRepository.save(new User(credentials.name(), hashPassword));
     }
 
     @Override
-    public Optional<UserSession> login(User user) {
-        Optional<User> databaseCredentials = userRepository.findByLogin(user.getLogin());
-        if(databaseCredentials.isEmpty()) {
+    public Optional<UserSession> login(UserCredentialsDto credentials) {
+        Optional<User> user = userRepository.findByLogin(credentials.name());
+        if(user.isEmpty()) {
             return Optional.empty();
         }
-        if(!PasswordUtil.matches(user.getPassword(), databaseCredentials.get().getPassword())){
+        if(!PasswordUtil.matches(credentials.password(), user.get().getPassword())){
             return Optional.empty();
         }
-        UserSession userSession = getSession(databaseCredentials.get());
+        UserSession userSession = getSession(user.get());
         return Optional.of(userSession) ;
     }
 
