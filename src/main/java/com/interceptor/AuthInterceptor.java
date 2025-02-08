@@ -1,5 +1,6 @@
 package com.interceptor;
 
+import com.exception.NonAuthorizedException;
 import com.repository.SessionRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +29,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("fhjdsasafjajsfjasjfajsfjasfjasj");
         String requestURI = request.getRequestURI();
         if (PUBLIC_ENDPOINTS.stream().anyMatch(requestURI::startsWith)) {
             return true;
@@ -41,8 +41,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (sessionId != null && sessionRepository.findById(UUID.fromString(sessionId)).isPresent()) {
             return true;
         } else {
-            response.sendRedirect("/signIn");
-            return false;
+            throw new NonAuthorizedException("Not authorized");
         }
     }
 }

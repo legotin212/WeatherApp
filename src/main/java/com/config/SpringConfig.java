@@ -29,7 +29,7 @@ import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
     @Autowired
-    private AuthInterceptor authInterceptor;
+    AuthInterceptor authInterceptor;
     private final Dotenv dotenv = Dotenv.load();
 
     private final String dbUser = dotenv.get("DB_USER");

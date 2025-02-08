@@ -12,7 +12,7 @@ public class SessionCleanupScheduler {
     public SessionCleanupScheduler(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
-     @Scheduled
+    @Scheduled(fixedRate = 600000)
     public void cleanupExpiredSessions() {
         sessionRepository.deleteExpiredSessions();
      }
