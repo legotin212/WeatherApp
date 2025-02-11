@@ -5,4 +5,17 @@
       <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
     </content>
   </component>
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping>
+          <factory-entry name="WeatherApp" value="68f0f1fd-29ac-45a6-b3c2-de7287678856" />
+          <factory-entry name="entityManagerFactory" />
+        </datasource-mapping>
+        <naming-strategy-map />
+      </configuration>
+    </facet>
+  </component>
 </module>

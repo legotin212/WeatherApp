@@ -4,24 +4,25 @@ import com.dto.UserLoginDto;
 import com.entity.User;
 import com.entity.UserSession;
 import com.exception.UserAlreadyExistsException;
-import com.repository.SessionRepository;
+import com.repository.UserSessionRepository;
 import com.repository.UserRepository;
 import com.util.passwordutil.PasswordUtil;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserAuthServiceImpl implements UserAuthService {
     private final int SESSION_LIFETIME_SECONDS = 86400;
-    private final SessionRepository sessionRepository;
+    private final UserSessionRepository userSessionRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public UserAuthServiceImpl(SessionRepository sessionRepository, UserRepository userRepository) {
-        this.sessionRepository = sessionRepository;
+    public UserAuthServiceImpl(UserSessionRepository userSessionRepository, UserRepository userRepository) {
+        this.userSessionRepository = userSessionRepository;
         this.userRepository = userRepository;
     }
 
@@ -56,16 +57,17 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     private UserSession getSession(User user) {
-    Optional<UserSession> session = sessionRepository.findActiveSessionByUser(user);
+    Optional<UserSession> session = userSessionRepository.findByUserAndExpiresAtAfter(user, LocalDateTime.now());
         return session.orElseGet(() -> createSession(user));
     }
 
     private UserSession createSession(User user){
         UserSession session = new UserSession();
         session.setUser(user);
+        session.setId(UUID.randomUUID());
         LocalDateTime expires = LocalDateTime.now().plusSeconds(SESSION_LIFETIME_SECONDS);
         session.setExpiresAt(expires);
-        sessionRepository.save(session);
+        userSessionRepository.save(session);
         return session;
     }
 

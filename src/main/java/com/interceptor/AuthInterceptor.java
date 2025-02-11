@@ -1,7 +1,7 @@
 package com.interceptor;
 
 import com.exception.UnauthorizedException;
-import com.repository.SessionRepository;
+import com.repository.UserSessionRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,13 +16,13 @@ import java.util.UUID;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
-    private final SessionRepository sessionRepository;
+    private final UserSessionRepository sessionRepository;
     private static final List<String> PUBLIC_ENDPOINTS = List.of(
             "/signUp", "/signIn", "/logout",
             "/css/", "/js/", "/images/"
     );
     @Autowired
-    public AuthInterceptor(SessionRepository sessionRepository) {
+    public AuthInterceptor(UserSessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
 
