@@ -1,10 +1,12 @@
 package com.controller;
 
-import com.dto.UserCredentialsDto;
+import com.dto.UserLoginDto;
 import com.entity.UserSession;
 import com.service.UserAuthService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -17,21 +19,24 @@ import java.util.Optional;
 @Controller
 public class SignInController {
     private final UserAuthService userAuthService;
+    @Autowired
+    private HttpServletRequest request;
 
     public SignInController(UserAuthService userAuthService) {
         this.userAuthService = userAuthService;
     }
 
     @GetMapping("/signIn")
-    public String getSignInPage(@CookieValue("SESSIONID") String sessionId) {
+    public String getSignInPage(@CookieValue(value = "SESSIONID", required = false) String sessionId) {
         if(sessionId != null) {
             return "index";
         }
-        return "signin";
+
+        return "sign-in";
     }
     @PostMapping("/signIn")
-    public String signIn(@ModelAttribute UserCredentialsDto credentials, Model model, HttpServletResponse response) {
-        Optional<UserSession> session = userAuthService.login(credentials);
+    public String signIn(@ModelAttribute UserLoginDto credentialsDto, Model model, HttpServletResponse response) {
+        Optional<UserSession> session = userAuthService.login(credentialsDto);
         if (session.isPresent()) {
             Cookie sessionCookie = new Cookie("SESSIONID", session.get().getId().toString());
             sessionCookie.setHttpOnly(true);
@@ -42,7 +47,7 @@ public class SignInController {
             return "index";
         } else {
             model.addAttribute("error", "Invalid credentials");
-            return "sign-in";
+            return "redirect:signIn";
         }
     }
     @PostMapping("/logout")

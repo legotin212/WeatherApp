@@ -1,11 +1,10 @@
 package com.interceptor;
 
-import com.exception.NonAuthorizedException;
+import com.exception.UnauthorizedException;
 import com.repository.SessionRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -41,7 +40,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (sessionId != null && sessionRepository.findById(UUID.fromString(sessionId)).isPresent()) {
             return true;
         } else {
-            throw new NonAuthorizedException("Not authorized");
+            throw new UnauthorizedException("Not authorized");
         }
     }
 }
