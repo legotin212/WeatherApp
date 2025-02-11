@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class SignInController {
@@ -29,9 +30,8 @@ public class SignInController {
     @GetMapping("/signIn")
     public String getSignInPage(@CookieValue(value = "SESSIONID", required = false) String sessionId) {
         if(sessionId != null) {
-            return "index";
+            return "redirect:home";
         }
-
         return "sign-in";
     }
     @PostMapping("/signIn")
@@ -51,7 +51,12 @@ public class SignInController {
         }
     }
     @PostMapping("/logout")
-    public String logout(HttpServletResponse response) {
-        return null;
+    public String logout(@CookieValue(value = "SESSIONID") String sessionId , HttpServletResponse response) {
+        userAuthService.logout(UUID.fromString(sessionId));
+        Cookie cookie = new Cookie("SESSIONID", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return "redirect:signIn";
     }
 }

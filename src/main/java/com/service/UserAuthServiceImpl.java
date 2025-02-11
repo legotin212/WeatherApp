@@ -52,8 +52,8 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
-    public void logout() {
-
+    public void logout(UUID sessionId) {
+        userSessionRepository.deleteById(sessionId);
     }
 
     private UserSession getSession(User user) {
