@@ -1,13 +1,13 @@
 package com.service;
 
-import com.dto.UserCredentialsDto;
-import com.entity.User;
+import com.dto.UserLoginDto;
 import com.entity.UserSession;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UserAuthService {
-    public void createUser(UserCredentialsDto credentials);
-    public Optional<UserSession> login(UserCredentialsDto credentials);
-    public void logout();
+    public void createUser(UserLoginDto credentials);
+    public Optional<UserSession> login(UserLoginDto credentials);
+    public void logout(UUID sessionId);
 }

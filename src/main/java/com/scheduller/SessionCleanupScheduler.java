@@ -1,19 +1,22 @@
 package com.scheduller;
 
-import com.repository.SessionRepository;
+import com.repository.UserSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class SessionCleanupScheduler {
-    private final SessionRepository sessionRepository;
+    private final int CLEANUP_INTERVAL_MILLISECONDS = 600000;
+    private final UserSessionRepository sessionRepository;
     @Autowired
-    public SessionCleanupScheduler(SessionRepository sessionRepository) {
+    public SessionCleanupScheduler(UserSessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
-    @Scheduled(fixedRate = 600000)
+    @Scheduled(fixedRate = CLEANUP_INTERVAL_MILLISECONDS)
     public void cleanupExpiredSessions() {
-        sessionRepository.deleteExpiredSessions();
+        sessionRepository.deleteExpiredSessions(LocalDateTime.now());
      }
 }

@@ -1,11 +1,10 @@
 package com.interceptor;
 
-import com.exception.NonAuthorizedException;
-import com.repository.SessionRepository;
+import com.exception.UnauthorizedException;
+import com.repository.UserSessionRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,13 +16,13 @@ import java.util.UUID;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
-    private final SessionRepository sessionRepository;
+    private final UserSessionRepository sessionRepository;
     private static final List<String> PUBLIC_ENDPOINTS = List.of(
             "/signUp", "/signIn", "/logout",
             "/css/", "/js/", "/images/"
     );
     @Autowired
-    public AuthInterceptor(SessionRepository sessionRepository) {
+    public AuthInterceptor(UserSessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
 
@@ -41,7 +40,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (sessionId != null && sessionRepository.findById(UUID.fromString(sessionId)).isPresent()) {
             return true;
         } else {
-            throw new NonAuthorizedException("Not authorized");
+            throw new UnauthorizedException("Not authorized");
         }
     }
 }

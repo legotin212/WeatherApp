@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 @Entity
-@Table(name = "Locations")
+@Table(name = "locations")
 @Getter
 @NoArgsConstructor
 public class Location {
@@ -18,8 +18,8 @@ public class Location {
     private int id;
     @Column(name = "Name")
     private String name;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @ManyToOne
+    @JoinColumn(name = "UserId", nullable = false)
     private User user;
     @Column(name = "Latitude")
     private BigDecimal latitude;
