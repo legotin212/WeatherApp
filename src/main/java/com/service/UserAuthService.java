@@ -7,7 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserAuthService {
-    public void createUser(UserLoginDto credentials);
-    public Optional<UserSession> login(UserLoginDto credentials);
-    public void logout(UUID sessionId);
+     void createUser(UserLoginDto credentials);
+     Optional<UserSession> login(UserLoginDto credentials);
+     void logout(UUID sessionId);
+
 }

@@ -1,6 +1,7 @@
 package com.exceptionhandler;
 
 import com.exception.UnauthorizedException;
+import com.exception.WeatherApiException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,5 +18,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FOUND)  // HTTP 302
                 .headers(headers)
                 .body("Redirecting to /signIn");
+    }
+    @ExceptionHandler(WeatherApiException.class)
+    public ResponseEntity<String> handleWeatherApiException(WeatherApiException ex) {
+        return ResponseEntity.status(ex.getStatusCode())
+                .body("Ошибка при запросе погоды: " + ex.getResponseBody());
     }
 }
