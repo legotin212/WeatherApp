@@ -19,6 +19,7 @@ public class Location {
     @Column(name = "Name")
     private String name;
     @ManyToOne
+    @Setter
     @JoinColumn(name = "UserId", nullable = false)
     private User user;
     @Column(name = "Latitude")
