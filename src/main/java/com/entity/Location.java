@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "locations")
 @Getter
+@Setter
 @NoArgsConstructor
 public class Location {
     @Id
@@ -19,7 +20,6 @@ public class Location {
     @Column(name = "Name")
     private String name;
     @ManyToOne
-    @Setter
     @JoinColumn(name = "UserId", nullable = false)
     private User user;
     @Column(name = "Latitude")
