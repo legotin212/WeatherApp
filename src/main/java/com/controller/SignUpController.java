@@ -3,7 +3,7 @@ package com.controller;
 import com.dto.UserLoginDto;
 import com.dto.SignUpUserDto;
 import com.exception.UserAlreadyExistsException;
-import com.service.UserAuthService;
+import com.service.UserService;
 import com.util.validator.SignUpUserDTOValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class SignUpController {
-    private final UserAuthService userAuthService;
+    private final UserService userAuthService;
     private final SignUpUserDTOValidator userCredentialsValidator;
     @Autowired
-    public SignUpController(UserAuthService userAuthService, SignUpUserDTOValidator userCredentialsValidator) {
+    public SignUpController(UserService userAuthService, SignUpUserDTOValidator userCredentialsValidator) {
         this.userAuthService = userAuthService;
         this.userCredentialsValidator = userCredentialsValidator;
     }
