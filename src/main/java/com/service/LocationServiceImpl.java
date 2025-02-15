@@ -25,7 +25,7 @@ public class LocationServiceImpl implements LocationService{
 
     @Override
     public WeatherDto getWeatherForLocation(Location location) {
-        return weatherApiRequestClientService.getWeatherForLocationByCoordinates(location.getLatitude(),location.getLongitude()).block();
+        return null;
     }
 
     @Override
@@ -42,6 +42,8 @@ public class LocationServiceImpl implements LocationService{
 
     @Override
     public List<LocationDto> getLocationsByName(String locationName) {
-        return weatherApiRequestClientService.getLocationsByName(locationName).block();
+       List<LocationDto> locationDtos =  weatherApiRequestClientService.getLocationsByName(locationName);
+        System.out.println(locationDtos);
+        return locationDtos;
     }
 }

@@ -25,6 +25,6 @@ public class UserSession {
 
     public UserSession(User user, LocalDateTime expiresAt) {
         this.user = user;
-        expiresAt = expiresAt;
+        this.expiresAt = expiresAt;
     }
 }
