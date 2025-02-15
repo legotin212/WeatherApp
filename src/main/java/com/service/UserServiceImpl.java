@@ -15,13 +15,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserAuthServiceImpl implements UserAuthService {
+public class UserServiceImpl implements UserService {
     private final int SESSION_LIFETIME_SECONDS = 86400;
     private final UserSessionRepository userSessionRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public UserAuthServiceImpl(UserSessionRepository userSessionRepository, UserRepository userRepository) {
+    public UserServiceImpl(UserSessionRepository userSessionRepository, UserRepository userRepository) {
         this.userSessionRepository = userSessionRepository;
         this.userRepository = userRepository;
     }

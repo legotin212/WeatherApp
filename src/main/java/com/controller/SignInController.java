@@ -2,7 +2,7 @@ package com.controller;
 
 import com.dto.UserLoginDto;
 import com.entity.UserSession;
-import com.service.UserAuthService;
+import com.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,11 +19,11 @@ import java.util.UUID;
 
 @Controller
 public class SignInController {
-    private final UserAuthService userAuthService;
+    private final UserService userAuthService;
     @Autowired
     private HttpServletRequest request;
 
-    public SignInController(UserAuthService userAuthService) {
+    public SignInController(UserService userAuthService) {
         this.userAuthService = userAuthService;
     }
 
