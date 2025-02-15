@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(WeatherApiException.class)
     public ResponseEntity<String> handleWeatherApiException(WeatherApiException ex) {
-        return ResponseEntity.status(ex.getStatusCode())
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Ошибка при запросе погоды: " + ex.getResponseBody());
     }
 }
