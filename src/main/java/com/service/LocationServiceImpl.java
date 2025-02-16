@@ -13,11 +13,11 @@ import java.util.List;
 
 @Service
 public class LocationServiceImpl implements LocationService{
-    private final WeatherApiRequestClientService weatherApiRequestClientService;
+    private final WeatherApiClientService weatherApiRequestClientService;
     private final LocationRepository locationRepository;
     private final LocationMapper locationMapper;
     @Autowired
-    public LocationServiceImpl(WeatherApiRequestClientService weatherApiRequestClientService, LocationRepository locationRepository, LocationMapper locationMapper) {
+    public LocationServiceImpl(WeatherApiClientService weatherApiRequestClientService, LocationRepository locationRepository, LocationMapper locationMapper) {
         this.weatherApiRequestClientService = weatherApiRequestClientService;
         this.locationRepository = locationRepository;
         this.locationMapper = locationMapper;
@@ -43,7 +43,6 @@ public class LocationServiceImpl implements LocationService{
     @Override
     public List<LocationDto> getLocationsByName(String locationName) {
        List<LocationDto> locationDtos =  weatherApiRequestClientService.getLocationsByName(locationName);
-        System.out.println(locationDtos);
-        return locationDtos;
+       return locationDtos;
     }
 }

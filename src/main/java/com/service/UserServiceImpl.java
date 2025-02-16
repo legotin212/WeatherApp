@@ -3,6 +3,7 @@ package com.service;
 import com.dto.UserLoginDto;
 import com.entity.User;
 import com.entity.UserSession;
+import com.exception.InvalidUserSession;
 import com.exception.UserAlreadyExistsException;
 import com.repository.UserSessionRepository;
 import com.repository.UserRepository;
@@ -56,6 +57,19 @@ public class UserServiceImpl implements UserService {
         userSessionRepository.deleteById(sessionId);
     }
 
+    @Override
+    public User getUser(UUID sessionId) {
+    Optional<UserSession> session =  userSessionRepository.findById(sessionId);
+    if(session.isPresent()) {
+        return session.get().getUser();
+    }
+    else {
+
+        throw new InvalidUserSession("Current Session is invalid");
+    }
+
+    }
+
     private UserSession getSession(User user) {
     Optional<UserSession> session = userSessionRepository.findByUserAndExpiresAtAfter(user, LocalDateTime.now());
         return session.orElseGet(() -> createSession(user));
@@ -68,7 +82,7 @@ public class UserServiceImpl implements UserService {
         LocalDateTime expires = LocalDateTime.now().plusSeconds(SESSION_LIFETIME_SECONDS);
         session.setExpiresAt(expires);
         userSessionRepository.save(session);
-        return session;
+        return session;///вынести в отдельный сервис
     }
 
 }

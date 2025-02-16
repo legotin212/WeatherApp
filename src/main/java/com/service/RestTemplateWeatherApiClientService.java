@@ -1,9 +1,12 @@
 package com.service;
 
 import com.dto.LocationDto;
-import com.exception.InvalidApiRequestException;
+
+import com.dto.WeatherDto;
 import com.exception.JsonDeserializationException;
 import com.exception.WeatherApiException;
+import com.exception.InvalidApiRequestException;
+
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -15,14 +18,17 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class WeatherApiRequestClientService {
+public class RestTemplateWeatherApiClientService implements WeatherApiClientService{
     private static final Dotenv dotenv = Dotenv.load();
     private static final String API_KEY = dotenv.get("API_KEY");
 
-
+    public WeatherDto getWeatherForLocationByCoordinates(BigDecimal latitude, BigDecimal longitude ) {
+        return null;
+    }
     public List<LocationDto> getLocationsByName(String location) {
         String url = UriComponentsBuilder.fromHttpUrl("https://api.openweathermap.org/geo/1.0/direct")
                 .queryParam("q", location)
