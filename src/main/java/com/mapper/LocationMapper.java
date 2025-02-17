@@ -1,6 +1,6 @@
 package com.mapper;
 
-import com.dto.LocationDto;
+import com.dto.response.LocationResponseDto;
 import com.entity.Location;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,12 +10,12 @@ public interface LocationMapper {
 
     @Mapping(source = "latitude", target = "lat")
     @Mapping(source = "longitude", target = "lon")
-    LocationDto toDto(Location location);
+    LocationResponseDto toDto(Location location);
 
     @Mapping(source = "lat", target = "latitude")
     @Mapping(source = "lon", target = "longitude")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
-    Location locationDtoToLocation(LocationDto dto);
+    Location LocationResponseDtoToLocation(LocationResponseDto dto);
 }
 

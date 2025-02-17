@@ -1,6 +1,6 @@
 package com.util.validator;
 
-import com.dto.SignUpUserDto;
+import com.dto.request.SignUpUserDto;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

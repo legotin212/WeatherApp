@@ -1,7 +1,7 @@
 package com.controller;
 
-import com.dto.UserLoginDto;
-import com.dto.SignUpUserDto;
+import com.dto.request.UserLoginDto;
+import com.dto.request.SignUpUserDto;
 import com.exception.UserAlreadyExistsException;
 import com.service.UserService;
 import com.util.validator.SignUpUserDTOValidator;

@@ -1,6 +1,6 @@
 package com.controller;
 
-import com.dto.LocationDto;
+import com.dto.response.LocationResponseDto;
 import com.entity.User;
 import com.service.LocationService;
 import com.service.UserService;
@@ -21,13 +21,13 @@ public class LocationSearchController {
 
     @GetMapping("/locationSearch")
     public String search(@RequestParam(name = "locationName" ) String locationName, Model model ) {
-        List<LocationDto> locations = locationService.getLocationsByName(locationName);
+        List<LocationResponseDto> locations = locationService.getLocationsByName(locationName);
         model.addAttribute("locations", locations);
         return "search-results";
     }
 
     @PostMapping("/addLocation")
-    public String addLocation(@ModelAttribute(name = "locationDto" ) LocationDto locationDto,
+    public String addLocation(@ModelAttribute(name = "locationDto" ) LocationResponseDto locationDto,
                               @CookieValue("SESSIONID") String sessionId,
                               Model model) {
         User user = userService.getUser(UUID.fromString(sessionId));

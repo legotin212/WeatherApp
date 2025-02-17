@@ -1,6 +1,6 @@
 package com.service;
 
-import com.dto.UserLoginDto;
+import com.dto.request.UserLoginDto;
 import com.entity.User;
 import com.entity.UserSession;
 
