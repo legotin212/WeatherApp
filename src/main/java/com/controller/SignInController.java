@@ -30,7 +30,7 @@ public class SignInController {
     @GetMapping("/signIn")
     public String getSignInPage(@CookieValue(value = "SESSIONID", required = false) String sessionId) {
         if(sessionId != null) {
-            return "redirect:home";
+            return "redirect:/home";
         }
         return "sign-in";
     }
@@ -44,10 +44,10 @@ public class SignInController {
             sessionCookie.setMaxAge(86400);
             response.addCookie(sessionCookie);
             model.addAttribute("sessionId", session.get().getId());
-            return "index";
+            return "redirect:/home";
         } else {
             model.addAttribute("error", "Invalid credentials");
-            return "redirect:signIn";
+            return "redirect:/signIn";
         }
     }
     @PostMapping("/logout")

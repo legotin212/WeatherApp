@@ -1,5 +1,6 @@
 package com.service;
 
+import com.dto.LocationDeleteRequest;
 import com.dto.LocationDto;
 import com.dto.WeatherDto;
 import com.entity.Location;
@@ -11,6 +12,7 @@ public interface LocationService {
     WeatherDto getWeatherForLocation(Location location);
 
     void saveLocation(User user, LocationDto location);
-    void deleteLocation(User user, Location location);
+    void removeLocation(User user, LocationDeleteRequest locationDeleteRequest);
     List<LocationDto> getLocationsByName(String name);
+    List<WeatherDto> getWeatherList(User user);
 }

@@ -1,31 +1,45 @@
 package com.service;
 
+import com.dto.LocationDeleteRequest;
 import com.dto.LocationDto;
 import com.dto.WeatherDto;
 import com.entity.Location;
 import com.entity.User;
+import com.exception.LocationDoesNotExistsException;
 import com.mapper.LocationMapper;
 import com.repository.LocationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class LocationServiceImpl implements LocationService{
-    private final WeatherApiRequestClientService weatherApiRequestClientService;
+    private final WeatherApiClientService weatherApiClient;
     private final LocationRepository locationRepository;
     private final LocationMapper locationMapper;
-    @Autowired
-    public LocationServiceImpl(WeatherApiRequestClientService weatherApiRequestClientService, LocationRepository locationRepository, LocationMapper locationMapper) {
-        this.weatherApiRequestClientService = weatherApiRequestClientService;
-        this.locationRepository = locationRepository;
-        this.locationMapper = locationMapper;
-    }
+    private final UserRepository userRepository;
+
 
     @Override
     public WeatherDto getWeatherForLocation(Location location) {
-        return null;
+      WeatherDto weatherDto = weatherApiClient.getWeatherForLocation(location);
+      weatherDto.getCoord().setLat(location.getLatitude());
+      weatherDto.getCoord().setLon(location.getLongitude());
+      weatherDto.setName(location.getName());
+      return weatherDto;
+    }
+
+    @Override
+    public List<WeatherDto> getWeatherList(User user) {
+        List<WeatherDto> weatherList = new ArrayList<>();
+        user.getLocations().forEach(location -> weatherList.add(getWeatherForLocation(location)));
+        return weatherList;
     }
 
     @Override
@@ -36,14 +50,18 @@ public class LocationServiceImpl implements LocationService{
     }
 
     @Override
-    public void deleteLocation(User user, Location location) {
-        locationRepository.delete(location);
+    @Transactional
+    public void removeLocation(User user,  LocationDeleteRequest locationDeleteRequest) {
+        Optional<Location> location = locationRepository.findByUserIdAndLatitudeAndLongitude(user.getId(),locationDeleteRequest.getLat(),locationDeleteRequest.getLon());
+        if(location.isEmpty()){
+           throw new LocationDoesNotExistsException("No location with this name, lat, lon were found");
+        }
+        Location locationToDelete = location.get();
+        locationRepository.deleteById(locationToDelete.getId());
     }
 
     @Override
     public List<LocationDto> getLocationsByName(String locationName) {
-       List<LocationDto> locationDtos =  weatherApiRequestClientService.getLocationsByName(locationName);
-        System.out.println(locationDtos);
-        return locationDtos;
+        return weatherApiClient.getLocationsByName(locationName);
     }
 }

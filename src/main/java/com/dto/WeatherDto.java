@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -19,6 +20,7 @@ public class WeatherDto {
     private List<Weather> weather;
     private String name;
     private Sys sys;
+    private Coord coord;
 
     @Getter
     @Setter
@@ -52,5 +54,13 @@ public class WeatherDto {
     @AllArgsConstructor
     public static class Sys {
         private String country;
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Coord{
+        private BigDecimal lat;
+        private BigDecimal lon;
     }
 }
