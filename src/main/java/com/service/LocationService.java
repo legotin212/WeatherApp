@@ -13,6 +13,6 @@ public interface LocationService {
 
     void saveLocation(User user, LocationResponseDto location);
     void removeLocation(User user, LocationDeleteRequestDto locationDeleteRequest);
-    List<LocationResponseDto> getLocationsByName(String name);
     List<WeatherResponseDto> getWeatherList(User user);
+    List<LocationResponseDto> getAvailableLocationsByName(String locationName, User user);
 }

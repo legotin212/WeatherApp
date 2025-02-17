@@ -5,6 +5,7 @@ import com.dto.response.LocationResponseDto;
 import com.dto.response.WeatherResponseDto;
 import com.entity.Location;
 import com.entity.User;
+import com.exception.LocationAlreadyExistsException;
 import com.exception.LocationDoesNotExistsException;
 import com.mapper.LocationMapper;
 import com.repository.LocationRepository;
@@ -40,10 +41,14 @@ public class LocationServiceImpl implements LocationService{
     }
 
     @Override
+    @Transactional
     public void saveLocation(User user, LocationResponseDto locationDto) {
-        Location location = locationMapper.LocationResponseDtoToLocation(locationDto);
-        location.setUser(user);
-        locationRepository.save(location);
+            if(checkIfLocationExists(user, locationDto)) {
+                throw new LocationAlreadyExistsException("User already picked this location");
+            }
+            Location location = locationMapper.LocationResponseDtoToLocation(locationDto);
+            location.setUser(user);
+            locationRepository.save(location);
     }
 
     @Override
@@ -58,11 +63,28 @@ public class LocationServiceImpl implements LocationService{
     }
 
     @Override
-    public List<LocationResponseDto> getLocationsByName(String locationName) {
+    public List<LocationResponseDto> getAvailableLocationsByName(String locationName, User user) {
+        List<LocationResponseDto> locations = getLocationsByName(locationName);
+        List<Location> addedLocations = user.getLocations();
+        locations.removeIf(locationResponseDto ->
+                addedLocations.stream().anyMatch(location ->
+                        location.getName().equals(locationResponseDto.getName())
+                )
+        );
+        return locations;
+    }
+
+    private List<LocationResponseDto> getLocationsByName(String locationName) {
         return weatherApiClient.getLocationsByName(formatLocationName(locationName));
     }
 
     private String formatLocationName(String locationName) {
         return locationName.trim().replace(" ", "-");
+    }
+
+    private boolean checkIfLocationExists(User user,LocationResponseDto locationDto) {
+        Optional<Location> location = locationRepository
+                .findByUserIdAndLatitudeAndLongitude(user.getId(),locationDto.getLat(),locationDto.getLon());
+        return location.isPresent();
     }
 }
