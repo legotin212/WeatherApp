@@ -59,6 +59,10 @@ public class LocationServiceImpl implements LocationService{
 
     @Override
     public List<LocationResponseDto> getLocationsByName(String locationName) {
-        return weatherApiClient.getLocationsByName(locationName);
+        return weatherApiClient.getLocationsByName(formatLocationName(locationName));
+    }
+
+    private String formatLocationName(String locationName) {
+        return locationName.trim().replace(" ", "-");
     }
 }

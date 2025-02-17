@@ -28,8 +28,7 @@ public class LocationSearchController {
 
     @PostMapping("/addLocation")
     public String addLocation(@ModelAttribute(name = "locationDto" ) LocationResponseDto locationDto,
-                              @CookieValue("SESSIONID") String sessionId,
-                              Model model) {
+                              @CookieValue("SESSIONID") String sessionId) {
         User user = userService.getUser(UUID.fromString(sessionId));
         locationService.saveLocation(user, locationDto);
         return "redirect:/home";
