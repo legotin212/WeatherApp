@@ -1,18 +1,18 @@
 package com.service;
 
-import com.dto.LocationDeleteRequest;
-import com.dto.LocationDto;
-import com.dto.WeatherDto;
+import com.dto.request.LocationDeleteRequestDto;
+import com.dto.response.LocationResponseDto;
+import com.dto.response.WeatherResponseDto;
 import com.entity.Location;
 import com.entity.User;
 
 import java.util.List;
 
 public interface LocationService {
-    WeatherDto getWeatherForLocation(Location location);
+    WeatherResponseDto getWeatherForLocation(Location location);
 
-    void saveLocation(User user, LocationDto location);
-    void removeLocation(User user, LocationDeleteRequest locationDeleteRequest);
-    List<LocationDto> getLocationsByName(String name);
-    List<WeatherDto> getWeatherList(User user);
+    void saveLocation(User user, LocationResponseDto location);
+    void removeLocation(User user, LocationDeleteRequestDto locationDeleteRequest);
+    List<LocationResponseDto> getLocationsByName(String name);
+    List<WeatherResponseDto> getWeatherList(User user);
 }

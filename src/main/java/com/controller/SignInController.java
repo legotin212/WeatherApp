@@ -1,6 +1,6 @@
 package com.controller;
 
-import com.dto.UserLoginDto;
+import com.dto.request.UserLoginDto;
 import com.entity.UserSession;
 import com.service.UserService;
 import jakarta.servlet.http.Cookie;

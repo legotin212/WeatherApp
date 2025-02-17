@@ -1,4 +1,4 @@
-package com.dto;
+package com.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WeatherDto {
+public class WeatherResponseDto {
     private Main main;
     private List<Weather> weather;
     private String name;
