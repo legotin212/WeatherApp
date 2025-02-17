@@ -32,6 +32,6 @@ public class LocationSearchController {
                               Model model) {
         User user = userService.getUser(UUID.fromString(sessionId));
         locationService.saveLocation(user, locationDto);
-        return "search-results";
+        return "redirect:/home";
     }
 }

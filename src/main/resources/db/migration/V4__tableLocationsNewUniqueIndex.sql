@@ -1,2 +1,2 @@
-alter table locations
-    add constraint unique_user_longitude_latitude unique (userid, longitude, latitude);
+ALTER TABLE locations
+    ADD CONSTRAINT unique_user_latitude_longitude UNIQUE (UserId, Latitude, Longitude);

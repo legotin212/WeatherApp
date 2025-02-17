@@ -3,6 +3,7 @@ package com.service;
 import com.dto.LocationDto;
 
 import com.dto.WeatherDto;
+import com.entity.Location;
 import com.exception.JsonDeserializationException;
 import com.exception.WeatherApiException;
 import com.exception.InvalidApiRequestException;
@@ -26,9 +27,28 @@ public class RestTemplateWeatherApiClientService implements WeatherApiClientServ
     private static final Dotenv dotenv = Dotenv.load();
     private static final String API_KEY = dotenv.get("API_KEY");
 
-    public WeatherDto getWeatherForLocationByCoordinates(BigDecimal latitude, BigDecimal longitude ) {
-        return null;
+    public WeatherDto getWeatherForLocation(Location location) {
+        String url = UriComponentsBuilder.fromHttpUrl("https://api.openweathermap.org/data/2.5/weather")
+                .queryParam("lon", location.getLongitude())
+                .queryParam("lat", location.getLatitude())
+                .queryParam("appid", API_KEY)
+                .queryParam("units", "metric")
+                .toUriString();
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            ResponseEntity<WeatherDto> response = restTemplate.getForEntity(url, WeatherDto.class);
+            return response.getBody();
+        } catch (HttpClientErrorException e) {
+            throw new InvalidApiRequestException("Client error: ");
+        } catch (HttpServerErrorException e) {
+            throw new WeatherApiException("Server error: ");
+        } catch (Exception e) {
+            throw new JsonDeserializationException("Error deserializing response");
+        }
     }
+
     public List<LocationDto> getLocationsByName(String location) {
         String url = UriComponentsBuilder.fromHttpUrl("https://api.openweathermap.org/geo/1.0/direct")
                 .queryParam("q", location)
