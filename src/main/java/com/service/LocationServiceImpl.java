@@ -68,7 +68,9 @@ public class LocationServiceImpl implements LocationService{
         List<Location> addedLocations = user.getLocations();
         locations.removeIf(locationResponseDto ->
                 addedLocations.stream().anyMatch(location ->
-                        location.getName().equals(locationResponseDto.getName())
+                        location.getName().equals(locationResponseDto.getName()) &&
+                                location.getLatitude().compareTo(locationResponseDto.getLat()) == 0 &&
+                                location.getLongitude().compareTo(locationResponseDto.getLon()) == 0
                 )
         );
         return locations;

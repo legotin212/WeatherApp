@@ -24,4 +24,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Ошибка при запросе погоды: " + ex.getResponseBody());
     }
+    @ExceptionHandler
+    public String handleException(Exception ex, HttpServletRequest request) {
+        return "error";
+    }
 }

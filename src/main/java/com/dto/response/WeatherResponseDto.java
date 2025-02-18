@@ -27,13 +27,13 @@ public class WeatherResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Main {
-        private double temp;
+        private int temp;
         @JsonProperty("feels_like")
-        private double feelsLike;
+        private int feelsLike;
         @JsonProperty("temp_min")
-        private double tempMin;
+        private int tempMin;
         @JsonProperty("temp_max")
-        private double tempMax;
+        private int tempMax;
         private int humidity;
     }
 
