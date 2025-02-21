@@ -1,11 +1,11 @@
 package com.controller;
 
-import com.dto.request.UserLoginDto;
 import com.dto.request.SignUpUserDto;
+import com.dto.request.UserLoginDto;
 import com.exception.UserAlreadyExistsException;
 import com.service.UserService;
 import com.util.validator.SignUpUserDTOValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class SignUpController {
     private final UserService userAuthService;
     private final SignUpUserDTOValidator userCredentialsValidator;
-    @Autowired
-    public SignUpController(UserService userAuthService, SignUpUserDTOValidator userCredentialsValidator) {
-        this.userAuthService = userAuthService;
-        this.userCredentialsValidator = userCredentialsValidator;
-    }
+
 
     @GetMapping("/signUp")
     public String getSignUpPage(@ModelAttribute("userRegistrationDto") SignUpUserDto userRegistrationDto, Model model) {

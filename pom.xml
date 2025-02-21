@@ -110,10 +110,30 @@
       <artifactId>flyway-database-postgresql</artifactId>
       <version>10.10.0</version>
     </dependency>
+
+
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>2.2.224</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.11.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.11.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>6.1.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -142,8 +162,8 @@
         <artifactId>tomcat7-maven-plugin</artifactId>
         <version>2.2</version>
         <configuration>
-          <path>/</path> <!-- Контекстный путь вашего приложения -->
-          <update>true</update> <!-- Автоматически обновлять приложение -->
+          <path>/</path>
+          <update>true</update>
         </configuration>
       </plugin>
     </plugins>
