@@ -4,6 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -16,6 +17,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(basePackages = "com.repository")
 @ComponentScan(basePackages = "com")
+@Profile("dev")
 public class JpaConfig {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String dbUser = dotenv.get("DB_USER");
